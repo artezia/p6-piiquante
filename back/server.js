@@ -1,9 +1,7 @@
 const http = require('http'); // importation du package http de node pour créer un serveur
 const app = require('./app'); // importation de l'application express
-const mongoose = require('mongoose');
 const dotenv = require('dotenv'); // importation du package dotenv pour stocker les variables d'environnement
 dotenv.config(); //fonction pour configurer dotenv
-
 
 const normalizePort = val => { // renvoi un port valide (fonction normalize)
     const port = parseInt(val, 10);
@@ -16,7 +14,7 @@ const normalizePort = val => { // renvoi un port valide (fonction normalize)
     }
     return false;
   };
-  const port = normalizePort(process.env.PORT || '3000'); // Déclaration du port sur lequel on souhaite que l'application tourne
+  const port = normalizePort(process.env.port || '3000'); // Déclaration du port sur lequel on souhaite que l'application tourne
   app.set('port', port);
   
   const errorHandler = error => { // gère les erreurs du serveur
