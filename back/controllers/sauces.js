@@ -74,9 +74,17 @@ exports.createSauce = (req, res, next) => {
 
  // afficher toutes les sauces
  exports.getAllSauces = (req, res, next) =>{ //route getAll
+  console.log("hello world");
     Sauce.find() //promise qui renvoie un tableau de toutes les sauces de la bdd
-    .then(sauces => res.status(200).json(sauces)) 
-    .catch(error => res.status(400).json({error})); 
+    .then(sauces => {
+      console.log("hello world");
+      res.status(200).json(sauces)
+    }) 
+    .catch(error => {
+      console.log(error);
+      res.status(400).json({error})
+      
+    }); 
 };
 
 // afficher like et dislike ou annule un choix

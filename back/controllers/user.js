@@ -35,7 +35,7 @@ exports.login = (req, res, next) => {
             bcrypt.compare(req.body.password, user.password) // fonction compare pour comparer le mot de passe)
             .then(valid => {
                 if (!valid) { // si mot de passe non valide
-                    res.status(401).json({message: 'Paire identifiant/ mot de passe incorrecte' })
+                    res.status(400).json({message: 'Paire identifiant/ mot de passe incorrecte' })
                 } else {
                     res.status(200).json({ // objet avec user ID et un token
                         userId: user._id,
