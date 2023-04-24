@@ -15,6 +15,3 @@ module.exports = (req, res, next) => {
       next();
     }
   };
-
-// var regex = /^[^@&"()!<>.$*€£`+=\/;?#]+$/
-// passwordSchema.replace(regex, '_');

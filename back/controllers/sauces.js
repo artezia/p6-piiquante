@@ -100,7 +100,7 @@ exports.likeSauce = (req, res) => {
         .then(() => res.status(200).json({ message: "Like ajouté !" }))
         .catch((error) => res.status(400).json({ error }));
   
-      /* Disike de la sauce */
+      /* Dislike de la sauce */
     } else if (req.body.like === -1) {
       Sauce.findOneAndUpdate(
         { _id: req.params.id },

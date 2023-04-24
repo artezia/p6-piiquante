@@ -4,7 +4,7 @@ const passwordSchema = new passwordValidator(); // création du schéma pour le 
 
 passwordSchema
   .is().min(8) // Minimum 8 caractères
-  .is().max(20) // Maximum 18 caractères
+  .is().max(20) // Maximum 20 caractères
   .has().uppercase(1) // doit contenir une lettre majuscule
   .has().lowercase() // doit contenir une lettre minuscule
   .has().digits(1) // doit contenir un chiffre
