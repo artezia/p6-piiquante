@@ -1,6 +1,6 @@
 const passwordValidator = require("password-validator"); // importation package password validator
 
-const passwordSchema = new passwordValidator(); // création du schéma pour le mot de passe
+const passwordSchema = new passwordValidator();// création du schéma pour le mot de passe
 
 passwordSchema
   .is().min(8) // Minimum 8 caractères
