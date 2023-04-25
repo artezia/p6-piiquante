@@ -1,27 +1,28 @@
-# HotTakes
+## Piiquante - Hot Takes !
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.4.
+La marque de condiments à base de piment Piiquante, veut développer une application web de critique des sauces piquantes appelée « Hot Takes » .
 
-## Development server
+Hot Takes est une galerie de sauces à travers laquelle les utilisateurs peuvent interagir grâce à une fonctionnalité de "like" ou "dislike" et ainsi évaluer les différentes sauces proposées, notamment en fonction d'un score de piquant noté sur dix.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+L'utilisateur qui publie une nouvelle sauce pourra par ailleurs la modifier ou la supprimer si nécessaire. 
 
-## Code scaffolding
+## Lancer le projet : 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Récupérer et ouvrir le fichier zip contenant le projet (frontend et backend).
+Ou cloner le repository : https://github.com/artezia/p6-piiquante.git
 
-## Build
+## Installer les dépendances
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Exécuter `npm install` à la racine des dossiers `front` et `back`.
 
-## Running unit tests
+## Démarrer le frontend
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Exécuter `npm run start` à la racine du dossier `front`
 
-## Running end-to-end tests
+## Variable d'environnement
+À la racine du dossier `back`, créer un fichier `.env` en remplaçant les variables tel le fichier `.env.example`
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Lancer l'application
+Exécuter `nodemon server` à la racine du dossier `back`
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+et consultez le projet à l'adresse suivante : `http://localhost:4200/`
