@@ -2,7 +2,7 @@ const multer = require('multer'); // import de multer
 
 const MIME_TYPES ={ // extensions autorisées
     'image/jpg': 'jpg',
-    'image/jpeg': 'jpg',
+    'image/jpeg': 'jpeg',
     'image/png': 'png'
 };
 
@@ -17,4 +17,18 @@ const storage = multer.diskStorage({ // objet de configuration de multer pour en
     }
 });
 
-module.exports = multer({storage}).single('image');// export du middleware multer
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 2000000 }, 
+    fileFilter: function (req, file, callback) {
+        if(MIME_TYPES.hasOwnProperty(file.mimetype)) { // (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg")
+            callback(null, true);
+        } else {
+            callback(null, false);
+            return callback(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+     },
+ });
+
+
+module.exports = upload.single('image');// export du middleware multer

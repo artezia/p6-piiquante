@@ -10,7 +10,7 @@ exports.signup = (req, res, next) =>{
     .then(hash =>{ // recupération du mot de passe crypté
         const user = new User({ // enregistrement dans la base de donnée avec un nouvel user
             email: req.body.email, // adresse email fournit dans le corps de la requête
-            password: hash // mot de passe crypé
+            password: hash // mot de passe crypté
         });
         user.save() //enregistrement dans la base de donnée
         .then(() => res.status(201).json({message: 'Utilisateur créé.'}))// 201 pour une création de ressource

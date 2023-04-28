@@ -36,9 +36,12 @@ exports.createSauce = (req, res, next) => {
                 res.status(401).json({ message : 'Non autorisé !'});
             } else {
                 Sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id}) // mise à jour enregistrement avec l'ID qui vient des paramétres de l'URL
+                const filename = sauce.imageUrl.split('/images/')[1]; // on récupère le nom de fichier
+                fs.unlink(`images/${filename}`, () => { // méthode unlink pour trouver le fichier à supprimer
+                    Sauce.deleteOne({_id: req.params.id}) 
                 .then(() => res.status(200).json({message : 'Objet modifié!'}))
                 .catch(error => res.status(401).json({ error }));
-            }
+            })}
         })
         .catch((error) => {
             res.status(400).json({ error });
@@ -74,14 +77,11 @@ exports.createSauce = (req, res, next) => {
 
  // afficher toutes les sauces
  exports.getAllSauces = (req, res, next) =>{ //route getAll
-  console.log("hello world");
     Sauce.find() //promise qui renvoie un tableau de toutes les sauces de la bdd
     .then(sauces => {
-      console.log("hello world");
       res.status(200).json(sauces)
     }) 
     .catch(error => {
-      console.log(error);
       res.status(400).json({error})
       
     }); 
@@ -89,44 +89,34 @@ exports.createSauce = (req, res, next) => {
 
 // afficher like et dislike ou annule un choix
 
-exports.likeSauce = (req, res) => {
-    /* Like de la sauce */
-    console.log(req);
-    if (req.body.like === 1) {
-      Sauce.findOneAndUpdate(
-        { _id: req.params.id },
-        { $inc: { likes: 1 }, $push: { usersLiked: req.body.userId } }
-      )
-        .then(() => res.status(200).json({ message: "Like ajouté !" }))
-        .catch((error) => res.status(400).json({ error }));
-  
-      /* Dislike de la sauce */
-    } else if (req.body.like === -1) {
-      Sauce.findOneAndUpdate(
-        { _id: req.params.id },
-        { $inc: { dislikes: 1 }, $push: { usersDisliked: req.body.userId } }
-      )
-        .then(() => res.status(200).json({ message: "Dislike ajouté !" }))
-        .catch((error) => res.status(400).json({ error }));
-  
-      /* annule son choix like ou dislike */
-    } else {
-      Sauce.findOne({ _id: req.params.id }).then((resultat) => {
-        if (resultat.usersLiked.includes(req.body.userId)) {
-          Sauce.findOneAndUpdate(
-            { _id: req.params.id },
-            { $inc: { likes: -1 }, $pull: { usersLiked: req.body.userId } }
-          )
-            .then(() => res.status(200).json({ message: "Votre like a bien été annulé !" }))
-            .catch((error) => res.status(400).json({ error }));
-        } else if (resultat.usersDisliked.includes(req.body.userId)) {
-          Sauce.findOneAndUpdate(
-            { _id: req.params.id },
-            { $inc: { dislikes: -1 }, $pull: { usersDisliked: req.body.userId } }
-          )
-            .then(() => res.status(200).json({ message: "Votre dislike a bien été annulé !" }))
-            .catch((error) => res.status(400).json({ error }));
-        }
-      });
+exports.likeSauce = async (req, res) => {
+  const sauce = await Sauce.findOne({_id: req.params.id});
+  const userCanLike = !sauce.usersLiked.includes(req.body.userId);
+  const userWantsToLike = req.body.like === 1;
+  const userCanDislike = !sauce.usersDisliked.includes(req.body.userId)
+  const userWantsToDislike = req.body.like === -1;
+  const userCanCancel = sauce.usersLiked.includes(req.body.userId) || sauce.usersDisliked.includes(req.body.userId)
+  const userWantsToCancel = req.body.like === 0;
+  if(userCanLike && userWantsToLike){
+    sauce.usersLiked.push(req.body.userId)
+  }
+  if(userCanDislike && userWantsToDislike){
+    sauce.usersDisliked.push(req.body.userId)
+  }
+  if(userCanCancel && userWantsToCancel){
+    if(sauce.usersLiked.includes(req.body.userId)){
+      const index = sauce.usersLiked.findIndex(a => a == req.body.userId)
+      sauce.usersLiked.splice(index, 1)
+    } else
+    {
+      const index = sauce.usersDisliked.findIndex(a => a == req.body.userId)
+      sauce.usersDisliked.splice(index, 1)
     }
+  }
+  sauce.likes = sauce.usersLiked.length
+  sauce.dislikes = sauce.usersDisliked.length
+  sauce.save()
+  .then(() => { res.status(201).json({message: 'vote enregistré'})})
+    .catch(error => { res.status(400).json( { error })})
+    
   };
